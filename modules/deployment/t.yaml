@@ -1,0 +1,25 @@
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: simpleingressroute
+  namespace: default
+spec:
+  entryPoints:
+    - http
+  routes:
+    - match: Host(`api.nvr.ai`) && PathPrefix(`/rbac`)
+      kind: Rule
+#      middlewares:
+#        - name: rate-limit-low
+#        - name: forwardauth-rbac
+#        - name: path-replace-base
+#        - name: security-response-headers
+      services:
+        - name: rbac
+          port: 8080
+  tls:
+    secretName: tls-nvrai
+    options:
+      name: tlsoptions
+      namespace: default
